@@ -9,13 +9,16 @@ import android.location.LocationManager
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.plcoding.weatherapp.domain.location.LocationTracker
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
+import javax.inject.Inject
 import kotlin.coroutines.resume
 
 /**
  * Created by Mohammad Kashif Ansari on 04,April,2023
  */
-class DefaultLOcationTracker(
+@ExperimentalCoroutinesApi
+class DefaultLOcationTracker @Inject constructor(
     private val locationClient:FusedLocationProviderClient,
     private val application:Application):LocationTracker {
     override suspend fun getCurrentLocation(): Location? {

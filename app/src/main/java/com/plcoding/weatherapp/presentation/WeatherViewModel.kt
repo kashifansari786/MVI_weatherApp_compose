@@ -16,39 +16,41 @@ import javax.inject.Inject
  * Created by Mohammad Kashif Ansari on 04,April,2023
  */
 @HiltViewModel
-class WeatherViewModel @Inject constructor(private val repository:WeatherRepository,
-private val locationTracker:LocationTracker):ViewModel(){
+class WeatherViewModel @Inject constructor(
+    private val repository: WeatherRepository,
+    private val locationTracker: LocationTracker
+): ViewModel() {
 
     var state by mutableStateOf(WeatherState())
         private set
 
-    fun loadWeatherInfo(){
+    fun loadWeatherInfo() {
         viewModelScope.launch {
-            state=state.copy(
-                isloading = true,
+            state = state.copy(
+                isloading = false,
                 error = null
             )
-            locationTracker.getCurrentLocation()?.let {location->
-                when(val result =repository.getWeatherData(location.latitude,location.longitude)){
-                    is Resource.Success->{
-                        state=state.copy(
+            locationTracker.getCurrentLocation()?.let { location ->
+                when(val result = repository.getWeatherData(location.latitude, location.longitude)) {
+                    is Resource.Success -> {
+                        state = state.copy(
                             weatherInfo = result.data,
                             isloading = false,
                             error = null
                         )
                     }
-                    is Resource.Error->{
-                        state=state.copy(
+                    is Resource.Error -> {
+                        state = state.copy(
                             weatherInfo = null,
                             isloading = false,
                             error = result.message
                         )
                     }
                 }
-            }?:kotlin.run {
-                state=state.copy(
+            } ?: kotlin.run {
+                state = state.copy(
                     isloading = false,
-                    error = "Couldn't retrive location. Make sure to grant permission and enable gps"
+                    error = "Couldn't retrieve location. Make sure to grant permission and enable GPS."
                 )
             }
         }

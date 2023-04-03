@@ -40,10 +40,34 @@ class MainActivity : ComponentActivity() {
         ))
         setContent {
             WeatherAppTheme {
-                Column(modifier = Modifier
-                    .fillMaxSize()
-                    .background(DarkBlue)) {
-                    WeatherCard(state = viewModel.state, backgroundColor = DeepBlue)
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(DarkBlue)
+                    ) {
+                        WeatherCard(
+                            state = viewModel.state,
+                            backgroundColor = DeepBlue
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        WeatherForecast(state = viewModel.state)
+                    }
+                    if(viewModel.state.isloading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                    viewModel.state.error?.let { error ->
+                        Text(
+                            text = error,
+                            color = Color.Red,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
                 }
             }
         }

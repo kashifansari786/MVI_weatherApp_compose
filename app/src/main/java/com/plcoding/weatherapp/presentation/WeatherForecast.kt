@@ -20,7 +20,7 @@ fun WeatherForecast(
     modifier: Modifier=Modifier
 ){
     state.weatherInfo?.weatherDataPerDay?.get(0)?.let {data->
-        Column(modifier = Modifier
+        Column(modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)) {
             Text(text = "Today", fontSize = 20.sp, color = Color.White)
